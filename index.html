@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#080808;
+  --s1:#111;
+  --s2:#181818;
+  --border:#222;
+  --text:#f2ede8;
+  --muted:#555;
+  --muted2:#888;
+  --accent:#ff4d1c;
+  --accent2:#ff7a52;
+  --font-d:'Space Grotesk',sans-serif;
+  --font-b:'DM Sans',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-b);overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:18px 40px;display:flex;justify-content:space-between;align-items:center}
+nav::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,8,8,0.98) 60%,transparent);pointer-events:none}
+.nav-logo{font-family:var(--font-d);font-size:17px;font-weight:600;letter-spacing:-0.3px;cursor:pointer;position:relative;z-index:1}
+.nav-logo span{color:var(--accent)}
+.nav-links{display:flex;gap:28px;list-style:none;position:relative;z-index:1}
+.nav-links a{color:var(--muted2);text-decoration:none;font-size:13px;font-weight:400;letter-spacing:0.5px;transition:color 0.2s}
+.nav-links a:hover{color:var(--text)}
+.nav-avail{position:relative;z-index:1;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted2);letter-spacing:0.5px}
+.avail-dot{width:7px;height:7px;border-radius:50%;background:#3dff8f;box-shadow:0 0 8px #3dff8f88;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+
+/* PAGE SYSTEM */
+.page{display:none}
+.page.active{display:block}
+
+/* ===== HOME ===== */
+
+/* HERO */
+.hero{height:100vh;display:grid;grid-template-rows:1fr auto;padding:0 40px 48px;position:relative;overflow:hidden}
+.hero-noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:0.4;z-index:0}
+.hero-glow{position:absolute;top:-10%;right:-5%;width:60%;height:80%;background:radial-gradient(ellipse,rgba(255,77,28,0.07) 0%,transparent 65%);z-index:0;pointer-events:none}
+.hero-glow2{position:absolute;bottom:-20%;left:-10%;width:50%;height:70%;background:radial-gradient(ellipse,rgba(255,77,28,0.04) 0%,transparent 65%);z-index:0;pointer-events:none}
+
+.hero-top{display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:32px;z-index:1}
+.hero-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+.hero-eyebrow span{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+.hero-eyebrow-line{flex:1;height:1px;background:var(--border)}
+.hero-h1{font-family:var(--font-d);font-size:clamp(58px,9vw,110px);font-weight:300;line-height:0.9;letter-spacing:-4px}
+.hero-h1 .line2{display:block;padding-left:80px;font-style:italic;color:var(--muted)}
+.hero-h1 .accent-word{color:var(--accent)}
+
+.hero-bottom{display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid var(--border);padding-top:28px;z-index:1}
+.hero-stat-row{display:flex;gap:48px}
+.hero-stat{display:flex;flex-direction:column;gap:4px}
+.stat-num{font-family:var(--font-d);font-size:28px;font-weight:300;color:var(--text);letter-spacing:-1px}
+.stat-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.hero-cta{display:flex;align-items:center;gap:0;cursor:pointer;background:none;border:none}
+.cta-text{font-family:var(--font-d);font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--muted2);padding:14px 24px;border:1px solid var(--border);transition:all 0.25s}
+.cta-icon{width:48px;height:48px;background:var(--accent);display:flex;align-items:center;justify-content:center;transition:all 0.25s;flex-shrink:0}
+.hero-cta:hover .cta-text{border-color:var(--accent);color:var(--text)}
+.hero-cta:hover .cta-icon{background:var(--accent2)}
+
+/* TICKER */
+.ticker-wrap{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:14px 0;overflow:hidden;white-space:nowrap}
+.ticker-inner{display:inline-flex;gap:0;animation:ticker 22s linear infinite}
+.ticker-inner:hover{animation-play-state:paused}
+.ticker-item{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);padding:0 32px}
+.ticker-dot{color:var(--accent);margin-right:32px}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* WORK SECTION */
+.work-section{padding:64px 40px 0}
+.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}
+.section-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+
+/* FILTER */
+.filter-bar{display:flex;gap:6px;margin-bottom:32px;flex-wrap:wrap}
+.fbtn{padding:7px 18px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:var(--font-b);font-size:12px;cursor:pointer;transition:all 0.2s;letter-spacing:0.5px}
+.fbtn:hover{border-color:var(--muted2);color:var(--text)}
+.fbtn.active{border-color:var(--accent);color:var(--accent);background:rgba(255,77,28,0.06)}
+
+/* MASONRY */
+.masonry{columns:3;column-gap:12px}
+.m-item{break-inside:avoid;margin-bottom:12px;cursor:pointer;position:relative;overflow:hidden;background:var(--s1)}
+.m-item:hover .m-overlay{opacity:1}
+.m-item:hover .m-bg{transform:scale(1.04)}
+.m-bg{width:100%;display:flex;align-items:center;justify-content:center;transition:transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);position:relative}
+.m-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,0.92) 0%,rgba(8,8,8,0.2) 60%,transparent 100%);opacity:0;transition:opacity 0.35s;display:flex;flex-direction:column;justify-content:flex-end;padding:18px}
+.m-title{font-family:var(--font-d);font-size:15px;font-weight:400;color:var(--text);margin-bottom:3px}
+.m-tag{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent)}
+.play-icon{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border:1px solid rgba(255,255,255,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.3s}
+.m-item:hover .play-icon{opacity:1}
+
+/* CLIENT STRIP */
+.client-strip{padding:64px 40px;border-top:1px solid var(--border);margin-top:64px}
+.client-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:40px}
+.client-row{display:flex;justify-content:center;align-items:center;gap:0;flex-wrap:wrap}
+.client-name{font-family:var(--font-d);font-size:13px;font-weight:400;color:var(--muted);letter-spacing:1px;text-transform:uppercase;padding:14px 24px;border:1px solid transparent;transition:all 0.25s;cursor:default}
+.client-name:hover{color:var(--text);border-color:var(--border)}
+
+/* ABOUT STRIP */
+.about-strip{padding:80px 40px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1px 1fr;gap:0}
+.about-divider{background:var(--border)}
+.about-left{padding-right:64px}
+.about-right{padding-left:64px;display:flex;flex-direction:column;justify-content:center}
+.about-kicker{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:20px}
+.about-headline{font-family:var(--font-d);font-size:clamp(32px,3.5vw,48px);font-weight:300;line-height:1.05;letter-spacing:-1.5px;margin-bottom:28px}
+.about-headline em{font-style:italic;color:var(--muted)}
+.about-body{font-size:14px;color:var(--muted2);line-height:1.8;font-weight:300;margin-bottom:32px}
+.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tool-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--border);font-size:12px;color:var(--muted2);letter-spacing:0.5px;transition:border-color 0.2s}
+.tool-item:hover{border-color:var(--muted);color:var(--text)}
+.tool-dot{width:5px;height:5px;background:var(--accent);flex-shrink:0}
+.exp-block{margin-bottom:28px;padding-bottom:28px;border-bottom:1px solid var(--border)}
+.exp-block:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.exp-company{font-family:var(--font-d);font-size:16px;font-weight:500;margin-bottom:4px}
+.exp-role{font-size:13px;color:var(--muted2);margin-bottom:2px}
+.exp-date{font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+.exp-current{display:inline-block;margin-left:10px;padding:2px 8px;background:rgba(255,77,28,0.12);border:1px solid rgba(255,77,28,0.3);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--accent);vertical-align:middle}
+
+/* CONTACT */
+.contact-strip{padding:80px 40px;border-top:1px solid var(--border);text-align:center}
+.contact-pre{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:24px}
+.contact-big{font-family:var(--font-d);font-size:clamp(36px,5.5vw,72px);font-weight:300;letter-spacing:-2.5px;line-height:1;margin-bottom:48px}
+.contact-big a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--border);padding-bottom:6px;transition:border-color 0.2s}
+.contact-big a:hover{border-color:var(--accent)}
+.contact-links{display:flex;justify-content:center;gap:0}
+.contact-link{padding:12px 28px;border:1px solid var(--border);font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted2);text-decoration:none;transition:all 0.2s;margin-right:-1px}
+.contact-link:hover{border-color:var(--text);color:var(--text);z-index:1;position:relative}
+
+footer{padding:20px 40px;border-top:1px solid var(--border);display:flex;justify-content:space-between}
+footer p{font-size:11px;color:var(--muted);letter-spacing:0.5px}
+
+/* PLACEHOLDER BG COLORS */
+.bg-a{background:linear-gradient(135deg,#12101e 0%,#1e1630 100%)}
+.bg-b{background:linear-gradient(135deg,#1a0d08 0%,#2e1508 100%)}
+.bg-c{background:linear-gradient(135deg,#0a140a 0%,#0f2014 100%)}
+.bg-d{background:linear-gradient(135deg,#14100a 0%,#241800 100%)}
+.bg-e{background:linear-gradient(135deg,#0a0f1a 0%,#101828 100%)}
+.bg-f{background:linear-gradient(135deg,#1a0a14 0%,#280a1e 100%)}
+.bg-g{background:linear-gradient(135deg,#0f0f0f 0%,#1a1a2a 100%)}
+.bg-h{background:linear-gradient(135deg,#1a1208 0%,#2a1e08 100%)}
+
+/* ===== PROJECT PAGE ===== */
+.proj-hero{padding:110px 40px 52px;border-bottom:1px solid var(--border)}
+.back-btn{display:flex;align-items:center;gap:10px;background:none;border:none;cursor:pointer;color:var(--muted2);font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-bottom:56px;transition:color 0.2s;font-family:var(--font-b);padding:0}
+.back-btn:hover{color:var(--text)}
+.back-btn:hover .back-arrow{transform:translateX(-4px)}
+.back-arrow{transition:transform 0.2s}
+.proj-cat{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.proj-name{font-family:var(--font-d);font-size:clamp(44px,7vw,80px);font-weight:300;letter-spacing:-2.5px;line-height:0.95}
+.proj-meta-row{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-top:0}
+.meta-cell{padding:20px 24px;border-right:1px solid var(--border)}
+.meta-cell:last-child{border-right:none}
+.meta-l{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.meta-v{font-size:14px;font-weight:400}
+.proj-video-wrap{padding:40px 40px}
+.video-box{width:100%;aspect-ratio:16/9;position:relative;overflow:hidden;cursor:pointer}
+.video-inner{width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative}
+.play-big{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:16px}
+.play-ring{width:80px;height:80px;border:1px solid rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all 0.3s}
+.video-box:hover .play-ring{border-color:var(--accent);background:rgba(255,77,28,0.1)}
+.play-hint{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+.video-corner{position:absolute;bottom:20px;right:20px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.proj-split{display:grid;grid-template-columns:1fr 360px;gap:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.proj-desc{padding:48px 40px;border-right:1px solid var(--border)}
+.proj-desc-h{font-family:var(--font-d);font-size:24px;font-weight:300;letter-spacing:-0.5px;margin-bottom:20px}
+.proj-desc p{font-size:14px;color:var(--muted2);line-height:1.85;font-weight:300;margin-bottom:14px}
+.proj-sidebar{padding:48px 32px}
+.sidebar-h{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:20px}
+.sidebar-tool{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--muted2)}
+.sidebar-tool:last-child{border-bottom:none}
+.sidebar-tool-dot{width:4px;height:4px;background:var(--accent);flex-shrink:0}
+.proj-gallery-wrap{padding:48px 40px;border-bottom:1px solid var(--border)}
+.gallery-h{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:24px}
+.gallery-g{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.gallery-g .g-item{aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.g-span2{grid-column:span 2;aspect-ratio:auto;min-height:200px}
+.proj-nav-row{padding:48px 40px;display:flex;justify-content:space-between}
+.pnav-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:8px;padding:0}
+.pnav-btn.r{align-items:flex-end}
+.pnav-lbl{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted)}
+.pnav-title{font-family:var(--font-d);font-size:18px;font-weight:300;color:var(--text);transition:color 0.2s}
+.pnav-btn:hover .pnav-title{color:var(--accent)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo" onclick="showHome()">Anderson<span>.</span></div>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showHome()">Work</a></li>
+    <li><a href="#about-strip">About</a></li>
+    <li><a href="#contact-strip">Contact</a></li>
+  </ul>
+  <div class="nav-avail"><div class="avail-dot"></div>Available for work</div>
+</nav>
+
+<!-- ========== HOME ========== -->
+<div id="home" class="page active">
+
+  <section class="hero">
+    <div class="hero-noise"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-glow2"></div>
+    <div class="hero-top">
+      <div class="hero-eyebrow">
+        <span>Senior Motion Graphics Designer</span>
+        <div class="hero-eyebrow-line"></div>
+        <span>Chennai → Kanyakumari</span>
+      </div>
+      <h1 class="hero-h1">
+        Motion<br>
+        <span class="line2">that <span class="accent-word">moves</span></span><br>
+        people.
+      </h1>
+    </div>
+    <div class="hero-bottom">
+      <div class="hero-stat-row">
+        <div class="hero-stat">
+          <span class="stat-num">4+</span>
+          <span class="stat-label">Years exp.</span>
+        </div>
+        <div class="hero-stat">
+          <span class="stat-num">10+</span>
+          <span class="stat-label">Brands</span>
+        </div>
+        <div class="hero-stat">
+          <span class="stat-num">360°</span>
+          <span class="stat-label">Campaigns</span>
+        </div>
+      </div>
+      <button class="hero-cta" onclick="document.getElementById('work-anchor').scrollIntoView({behavior:'smooth'})">
+        <span class="cta-text">See my work</span>
+        <span class="cta-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8l5 5 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </button>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker-wrap">
+    <div class="ticker-inner">
+      <span class="ticker-item">Motion Graphics</span><span class="ticker-dot">✦</span>
+      <span class="ticker-item">AI Video</span><span class="ticker-dot">✦</span>
+      <span class="ticker-item">After Effects</span><span class="ticker-dot">✦</span>
+      <span class="ticker-item">Reels & Loops</span><span class="ticker-dot">✦</span>
+      <span class="ticker-item">Brand Films</span><span class="ticker-dot">✦</span>
+      <span class="ticker-item">Cinema 4D</span><span class="ticker-dot">✦</span>
+      <span class="ticker-item">Explainer Videos</span><span class="ticker-dot">✦</span>
+      <span class="ticker-item">Logo Animation</span><span class="ticker-dot">✦</span>
+      <span class="ticker-item">VFX</span><span class="ticker-dot">✦</span>
+      <span class="ticker-item">Social Content</span><span class="ticker-dot">✦</span>
+      <!-- duplicate for seamless loop -->
+      <span class="ticker-item">Motion Graphics</span><span class="ticker-dot">✦</span>
+      <span class="ticker-item">AI Video</span><span class="ticker-dot">✦</span>
+      <span class="ticker-item">After Effects</span><span class="ticker-dot">✦</span>
+      <span class="ticker-item">Reels & Loops</span><span class="ticker-dot">✦</span>
+      <span class="ticker-item">Brand Films</span><span class="ticker-dot">✦</span>
+      <span class="ticker-item">Cinema 4D</span><span class="ticker-dot">✦</span>
+      <span class="ticker-item">Explainer Videos</span><span class="ticker-dot">✦</span>
+      <span class="ticker-item">Logo Animation</span><span class="ticker-dot">✦</span>
+      <span class="ticker-item">VFX</span><span class="ticker-dot">✦</span>
+      <span class="ticker-item">Social Content</span><span class="ticker-dot">✦</span>
+    </div>
+  </div>
+
+  <!-- WORK -->
+  <section class="work-section" id="work-anchor">
+    <div class="section-header">
+      <span class="section-label">Selected work</span>
+    </div>
+    <div class="filter-bar">
+      <button class="fbtn active" onclick="filter(this,'all')">All</button>
+      <button class="fbtn" onclick="filter(this,'reel')">Reels</button>
+      <button class="fbtn" onclick="filter(this,'gif')">GIFs</button>
+      <button class="fbtn" onclick="filter(this,'ai')">AI Video</button>
+      <button class="fbtn" onclick="filter(this,'brand')">Brand Films</button>
+      <button class="fbtn" onclick="filter(this,'social')">Social</button>
+    </div>
+    <div class="masonry" id="grid">
+
+      <div class="m-item" data-cat="reel" onclick="showProject('Nippon Paint — Campaign Reel','Reel','bg-a','Nippon Paint','2024','1:45 min','After Effects, Premiere Pro, C4D')">
+        <div class="m-bg bg-a" style="height:300px">
+          <div class="play-icon"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 1.5l9 4.5-9 4.5z" fill="#fff"/></svg></div>
+        </div>
+        <div class="m-overlay"><div class="m-title">Nippon Paint — Campaign Reel</div><div class="m-tag">Reel · 2024</div></div>
+      </div>
+
+      <div class="m-item" data-cat="ai" onclick="showProject('AI Dreamscape Series','AI Video','bg-b','Personal','2025','0:60 min','Runway ML, Sora, After Effects')">
+        <div class="m-bg bg-b" style="height:200px">
+          <div class="play-icon"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 1.5l9 4.5-9 4.5z" fill="#fff"/></svg></div>
+        </div>
+        <div class="m-overlay"><div class="m-title">AI Dreamscape Series</div><div class="m-tag">AI Video · 2025</div></div>
+      </div>
+
+      <div class="m-item" data-cat="brand" onclick="showProject('GSquare — Brand Film','Brand Film','bg-c','GSquare Group','2024','2:00 min','After Effects, Blender, Premiere')">
+        <div class="m-bg bg-c" style="height:250px"></div>
+        <div class="m-overlay"><div class="m-title">GSquare — Brand Film</div><div class="m-tag">Brand Film · 2024</div></div>
+      </div>
+
+      <div class="m-item" data-cat="gif" onclick="showProject('Loop Series — Type in Motion','GIF / Loop','bg-d','Personal','2024','—','After Effects, Illustrator')">
+        <div class="m-bg bg-d" style="height:195px"></div>
+        <div class="m-overlay"><div class="m-title">Loop Series — Type in Motion</div><div class="m-tag">GIF Loop · 2024</div></div>
+      </div>
+
+      <div class="m-item" data-cat="social" onclick="showProject('Planet Education — Social Cut','Social Video','bg-e','Planet Education','2024','0:30 min','Premiere, After Effects')">
+        <div class="m-bg bg-e" style="height:285px">
+          <div class="play-icon"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 1.5l9 4.5-9 4.5z" fill="#fff"/></svg></div>
+        </div>
+        <div class="m-overlay"><div class="m-title">Planet Education — Social Cut</div><div class="m-tag">Social · 2024</div></div>
+      </div>
+
+      <div class="m-item" data-cat="ai" onclick="showProject('Synthetic Portraits','AI Video','bg-f','Personal','2025','1:20 min','Midjourney, Runway, AE')">
+        <div class="m-bg bg-f" style="height:210px">
+          <div class="play-icon"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 1.5l9 4.5-9 4.5z" fill="#fff"/></svg></div>
+        </div>
+        <div class="m-overlay"><div class="m-title">Synthetic Portraits</div><div class="m-tag">AI Video · 2025</div></div>
+      </div>
+
+      <div class="m-item" data-cat="brand" onclick="showProject('Jolfest — Event Opener','Brand Film','bg-g','Jolfest','2023','0:90 min','After Effects, C4D')">
+        <div class="m-bg bg-g" style="height:175px"></div>
+        <div class="m-overlay"><div class="m-title">Jolfest — Event Opener</div><div class="m-tag">Brand Film · 2023</div></div>
+      </div>
+
+      <div class="m-item" data-cat="reel" onclick="showProject('Kay Fashions — Product Reel','Reel','bg-h','Kay Fashions','2024','1:00 min','Premiere, After Effects, PS')">
+        <div class="m-bg bg-h" style="height:265px">
+          <div class="play-icon"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 1.5l9 4.5-9 4.5z" fill="#fff"/></svg></div>
+        </div>
+        <div class="m-overlay"><div class="m-title">Kay Fashions — Product Reel</div><div class="m-tag">Reel · 2024</div></div>
+      </div>
+
+      <div class="m-item" data-cat="gif" onclick="showProject('Neomotion — Logo Reveal','GIF / Loop','bg-a','Neomotion','2023','—','After Effects, Illustrator')">
+        <div class="m-bg bg-a" style="height:185px"></div>
+        <div class="m-overlay"><div class="m-title">Neomotion — Logo Reveal</div><div class="m-tag">Logo Animation · 2023</div></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CLIENTS -->
+  <section class="client-strip">
+    <p class="client-label">Brands I've moved</p>
+    <div class="client-row">
+      <span class="client-name">Nippon Paint</span>
+      <span class="client-name">GSquare</span>
+      <span class="client-name">Planet Education</span>
+      <span class="client-name">Kay Fashions</span>
+      <span class="client-name">Jolfest</span>
+      <span class="client-name">Aladdin365</span>
+      <span class="client-name">Zimson</span>
+      <span class="client-name">BankingBridge</span>
+      <span class="client-name">Kochar</span>
+      <span class="client-name">Neomotion</span>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about-strip" id="about-strip">
+    <div class="about-left">
+      <p class="about-kicker">About</p>
+      <h2 class="about-headline">4+ years of<br>frames that <em>hit.</em></h2>
+      <p class="about-body">B.Sc Media Technology from ICAT Chennai. Currently Senior Motion Designer at Hashtag Inc — building 360° campaign visuals for brands across social, digital, and broadcast. Previously at Spinta Digital where I grew from editor to lead motion designer.</p>
+      <div class="tool-grid">
+        <div class="tool-item"><div class="tool-dot"></div>After Effects</div>
+        <div class="tool-item"><div class="tool-dot"></div>Premiere Pro</div>
+        <div class="tool-item"><div class="tool-dot"></div>Cinema 4D</div>
+        <div class="tool-item"><div class="tool-dot"></div>Blender</div>
+        <div class="tool-item"><div class="tool-dot"></div>Illustrator</div>
+        <div class="tool-item"><div class="tool-dot"></div>Photoshop</div>
+        <div class="tool-item"><div class="tool-dot"></div>Runway ML</div>
+        <div class="tool-item"><div class="tool-dot"></div>Midjourney</div>
+      </div>
+    </div>
+    <div class="about-divider"></div>
+    <div class="about-right">
+      <div class="exp-block">
+        <div class="exp-company">Hashtag Inc <span class="exp-current">Current</span></div>
+        <div class="exp-role">Senior Motion Graphics Designer</div>
+        <div class="exp-date">Oct 2024 — Present</div>
+      </div>
+      <div class="exp-block">
+        <div class="exp-company">Spinta Digital</div>
+        <div class="exp-role">Junior Editor → Motion Graphics Designer</div>
+        <div class="exp-date">Dec 2020 — Apr 2024</div>
+      </div>
+      <div class="exp-block">
+        <div class="exp-company">ICAT Design & Media College</div>
+        <div class="exp-role">B.Sc Media Technology</div>
+        <div class="exp-date">2017 — 2020</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-strip" id="contact-strip">
+    <p class="contact-pre">Let's work together</p>
+    <div class="contact-big">
+      <a href="mailto:andersonarun100@gmail.com">andersonarun100<br>@gmail.com</a>
+    </div>
+    <div class="contact-links">
+      <a class="contact-link" href="#">Behance</a>
+      <a class="contact-link" href="#">Vimeo</a>
+      <a class="contact-link" href="#">Instagram</a>
+      <a class="contact-link" href="#">LinkedIn</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 — A. Anderson</p>
+    <p>Kanyakumari, India · +91-8680977240</p>
+  </footer>
+
+</div>
+
+<!-- ========== PROJECT PAGE ========== -->
+<div id="proj-page" class="page">
+
+  <div class="proj-hero">
+    <button class="back-btn" onclick="showHome()">
+      <svg class="back-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to work
+    </button>
+    <p class="proj-cat" id="p-cat">Reel</p>
+    <h1 class="proj-name" id="p-name">Project Title</h1>
+  </div>
+
+  <div class="proj-meta-row">
+    <div class="meta-cell"><p class="meta-l">Client</p><p class="meta-v" id="p-client">—</p></div>
+    <div class="meta-cell"><p class="meta-l">Year</p><p class="meta-v" id="p-year">—</p></div>
+    <div class="meta-cell"><p class="meta-l">Duration</p><p class="meta-v" id="p-dur">—</p></div>
+    <div class="meta-cell"><p class="meta-l">Tools</p><p class="meta-v" id="p-tools" style="font-size:12px;color:var(--muted2)">—</p></div>
+  </div>
+
+  <div class="proj-video-wrap">
+    <div class="video-box" id="p-vbox">
+      <div class="video-inner">
+        <div id="p-vbg" style="position:absolute;inset:0"></div>
+        <div class="play-big">
+          <div class="play-ring">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 3l12 7-12 7V3z" fill="white" fill-opacity="0.9"/></svg>
+          </div>
+          <span class="play-hint">Click to play</span>
+        </div>
+        <span class="video-corner" id="p-vcorner">Main reel</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="proj-split">
+    <div class="proj-desc">
+      <h3 class="proj-desc-h">About this project</h3>
+      <p id="p-desc1">A kinetic motion piece built for a 360° campaign — delivered across social feeds, digital OOH, and paid media. Every frame was designed to work on mute and with sound.</p>
+      <p>The challenge was maintaining visual consistency across aspect ratios (9:16, 1:1, 16:9) while keeping the energy alive at every cut point. Motion timing was mapped against the audio score from the first frame.</p>
+    </div>
+    <div class="proj-sidebar">
+      <p class="sidebar-h">Made with</p>
+      <div id="p-toollist"></div>
+    </div>
+  </div>
+
+  <div class="proj-gallery-wrap">
+    <p class="gallery-h">Stills & frames</p>
+    <div class="gallery-g" id="p-gallery">
+      <div class="g-item g-span2 bg-a">Featured frame</div>
+      <div class="g-item bg-b">Frame 01</div>
+      <div class="g-item bg-d">Frame 02</div>
+      <div class="g-item bg-e">Frame 03</div>
+      <div class="g-item bg-f">Frame 04</div>
+    </div>
+  </div>
+
+  <div class="proj-nav-row">
+    <button class="pnav-btn" onclick="showProject('AI Dreamscape Series','AI Video','bg-b','Personal','2025','1:20 min','Runway ML, Sora, After Effects')">
+      <span class="pnav-lbl">← Previous</span>
+      <span class="pnav-title">AI Dreamscape Series</span>
+    </button>
+    <button class="pnav-btn r" onclick="showProject('GSquare — Brand Film','Brand Film','bg-c','GSquare Group','2024','2:00 min','After Effects, Blender, Premiere')">
+      <span class="pnav-lbl">Next →</span>
+      <span class="pnav-title">GSquare — Brand Film</span>
+    </button>
+  </div>
+
+</div>
+
+<script>
+function showHome(){
+  document.getElementById('home').classList.add('active');
+  document.getElementById('proj-page').classList.remove('active');
+  window.scrollTo({top:0,behavior:'instant'});
+}
+
+function showProject(name, cat, bg, client, year, dur, tools){
+  document.getElementById('p-name').textContent = name;
+  document.getElementById('p-cat').textContent = cat;
+  document.getElementById('p-client').textContent = client;
+  document.getElementById('p-year').textContent = year;
+  document.getElementById('p-dur').textContent = dur;
+  document.getElementById('p-tools').textContent = tools;
+  document.getElementById('p-vbg').className = bg;
+  document.getElementById('p-vcorner').textContent = cat + ' — ' + client;
+  const tlist = document.getElementById('p-toollist');
+  tlist.innerHTML = tools.split(', ').map(t=>`<div class="sidebar-tool"><div class="sidebar-tool-dot"></div>${t}</div>`).join('');
+  document.getElementById('home').classList.remove('active');
+  document.getElementById('proj-page').classList.add('active');
+  window.scrollTo({top:0,behavior:'instant'});
+}
+
+function filter(btn, cat){
+  document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.m-item').forEach(item=>{
+    item.style.display=(cat==='all'||item.dataset.cat===cat)?'':'none';
+  });
+}
+</script>
+</body>
+</html>
